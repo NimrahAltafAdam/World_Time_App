@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 
 class ChooseLocation extends StatefulWidget {
   const ChooseLocation({Key? key}) : super(key: key);
@@ -9,29 +10,7 @@ class ChooseLocation extends StatefulWidget {
 
 class _ChooseLocationState extends State<ChooseLocation> {
 
-  int counter = 0;
 
-  void getData() async {
-
-
-    //simulate a network request for a username
-    String username = await Future.delayed(Duration(seconds: 3), () {
-      return 'yoshi';
-    });
-
-    //simulate a network request to get bio of the username
-    String bio = await Future.delayed(Duration(seconds: 2), () {
-      return 'doctor, artist, chef';
-    });
-
-    print('$username- $bio');
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    getData();
-  }
   @override
   Widget build(BuildContext context) {
     print('build function run');
@@ -43,14 +22,6 @@ class _ChooseLocationState extends State<ChooseLocation> {
         centerTitle: true,
         elevation: 0,
       ),
-      body: RaisedButton(
-        onPressed: () {
-          setState(() {
-            counter += 1;
-          });
-        },
-        child: Text('counter is $counter'),
-      )
     );
   }
 }
