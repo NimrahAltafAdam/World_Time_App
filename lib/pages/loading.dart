@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
-import 'dart:convert';
+import 'package:world_time_app/services/world_time.dart';
 
 class Loading extends StatefulWidget {
   const Loading({Key? key}) : super(key: key);
@@ -11,43 +10,37 @@ class Loading extends StatefulWidget {
 
 class _LoadingState extends State<Loading> {
 
-  int counter = 0;
+  String time = "loading";
 
-  void getTime() async {
-    /*Response response = await get(Uri.http('jsonplaceholder.typicode.com', '/todos/1' ));
-    //use jsonDecode to format the data so that it can be used as an object
-    Map data = jsonDecode(response.body);
-    print(data);
-    print(data['completed']);*/
-    //make the request
-    Response response = await get(Uri.http('worldtimeapi.org', '/api/timezone/Europe/Amsterdam'));
-
-    Map data = jsonDecode(response.body);
-    //print(data);
-
-
-    // get properties from data
-    String datetime = data['datetime'];
-    String offset = data['utc_offset'].substring(1,3);
-    // print(datetime);
-    //print(offset);
-
-    //create a datetime object to add offset to datetime
-    // by creating DateTime var we are basically converting the string datetime output from the world clock api into a DateTime object
-    DateTime now = DateTime.parse(datetime);
-    now = now.add(Duration(hours: int.parse(offset) ));
-    print(now);
+  //SUMMARY:
+  //1.First we have loaded this widget, fired the function setupWorldTime() which is async.
+  //2.Then we created an instance of WorldTime class passing in all the info.
+  //3.Next we fire the getTime() function which will first await the response before moving on.
+  //4.Once the response is recieved and the time is set inside the instance,
+  //5.We can finally print the time and display it in the console.
+  void setupWorldTime()  async {
+    WorldTime instance = WorldTime(location: 'Berlin', flag: 'germany.png', url: 'Europe/Berlin');
+    //Here we need to use await so that pthe print statement only runs after the instance runs the function getTime as instance.time is depended on it.
+    //in order to use await on a custome instance like in this case where the class is on another file and instance on another. we have to add a temporary placeholder to our class by adding a Future key word before void
+    await instance.getTime();
+    print(instance.time);
+    setState(() {
+      time = instance.time;
+    });
   }
 
   @override
   void initState() {
     super.initState();
-    getTime();
+    setupWorldTime();
   }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Text("Loading Screen")
+      body: Padding(
+        padding: EdgeInsets.all(50.0),
+        child: Text(time)
+      )
     );
   }
 }
