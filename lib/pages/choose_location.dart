@@ -11,10 +11,26 @@ class _ChooseLocationState extends State<ChooseLocation> {
 
   int counter = 0;
 
+  void getData() async {
+
+
+    //simulate a network request for a username
+    String username = await Future.delayed(Duration(seconds: 3), () {
+      return 'yoshi';
+    });
+
+    //simulate a network request to get bio of the username
+    String bio = await Future.delayed(Duration(seconds: 2), () {
+      return 'doctor, artist, chef';
+    });
+
+    print('$username- $bio');
+  }
+
   @override
   void initState() {
     super.initState();
-    print('initState function run');
+    getData();
   }
   @override
   Widget build(BuildContext context) {
@@ -57,4 +73,10 @@ class _ChooseLocationState extends State<ChooseLocation> {
 
 //Dispose()
 //When the widget/state object is removed
+
+
+//ASYNCHRONOUS CODE
+/*An Example of such code could be interacting with an API endpoint or a database to get some data so we start a request but it doesnt finish straight away b/c it might take a second or two to complete that request to go and get the data.
+* Si if it finishes sometime after the initial request is made  in the meantime our code should not stop untill
+* the request is made and data comes back async code should be non-blocking so while the request is being made the rest of the code in our file could carry on */
 
